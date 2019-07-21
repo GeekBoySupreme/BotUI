@@ -19,31 +19,58 @@
       var value_response;
 
       botui.message.add({
-        content: 'Hello World from bot!'
+        content: 'Hello. Add a file for Photographs!'
       }).then(function () { // wait till previous message has been shown.
-          botui.message.add({
-          delay: 1000,
-          human: true,
-          content: 'Hello World from human!'
-        }).then(function(){
-          botui.action.text({
-          action: {
-            placeholder: 'Enter your text here'
+          return botui.action.text({
+            action: {
+            placeholder: 'Enter your Filename/Folder...'
             }
-              }).then(function (res) { // will be called when it is submitted.
+        }).then(function (res) { // will be called when it is submitted.
                   console.log(res.value); // will print whatever was typed in the field.
                   value_response=res.value;
             }).then(function(index)
             {
-              $.get("http://127.0.0.1:5000/"+value_response, function(response){
-                botui.message.add({
+              botui.message.add({
                   delay: 1000,
-                  content: response
-                  })
+                  loading: true,
+                  content: 'Are you sure you want to proceed?'
+                }).then(function(index)
+                {
+                  botui.action.button({ //shows decision buttons
+                          action: [
+                            { 
+                              text: 'Yes',
+                              value: 'yes'
+                            },
+                            { 
+                              text: 'No',
+                              value: 'no'
+                            }
+                          ]
+                        }).then(function (res) { // will be called when a button is clicked.
+                              console.log(res.value);
+                              if(res.value=='yes')
+                              {
+                              $.get('http://127.0.0.1:5000/'+value_response, function(response){
+                              botui.message.add({
+                                delay: 1500,
+                                content: response
+                                })
 
+                              });
+                              console.log(value_response); // will print "one" from 'value'
+                              }
+                              else
+                              {
+                                  botui.message.add({
+                                  delay: 1500,
+                                  content: 'Uploading Data to Places...'
+                                  });
+                              }
+                        });
                 });
+                 
             });
-        });
       });
       
     </script>
