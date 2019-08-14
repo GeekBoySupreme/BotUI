@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-<script>
-$(document).ready(function(){
-  $("button").click(function(){
-    $.get("http://127.0.0.1:5000/", function(response){
-      alert(response);
-    });
-  });
-});
-</script>
-</head>
-<body>
-
-<button>GET Request</button>
-
-</body>
+  <head>
+    <meta charset="utf-8">
+    <title>Convo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <script src="/cdn-cgi/apps/head/DLYWt_GDvCZRnvWruXHSa_rcy0Y.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    
+    <link rel="stylesheet" href="https://unpkg.com/botui/build/botui.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/botui/build/botui-theme-default.css" />
+  </head>
+  <body>
+    <div class="botui-app-container" id="convo-bot">
+      <bot-ui></bot-ui>
+    </div>
+    <script src="https://cdn.jsdelivr.net/vue/2.0.5/vue.min.js"></script>
+    <script src="https://unpkg.com/botui/build/botui.js"></script>
+    <script src="./conversation.js"></script>
+  </body>
 </html>

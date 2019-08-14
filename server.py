@@ -12,9 +12,14 @@ CORS(app)
 def get_response1():
   return getresponse2()
 
-@app.route('/hither')
+@app.route('/hello')
 def get_response():
   return getresponse()
+
+@app.route('/exit')
+def get_response2():
+  return getresponse3()
+
 
 if __name__ == "__main__":
     app.run()
