@@ -18,21 +18,26 @@
       var botui = new BotUI('hello-world');
       var value_response;
 
-      function convo(){
+      function convo_init(){
           botui.message.add({
-            content: 'Hello. Add a file for Photographs!'
+            content: 'Add a file to Upload!'
           }).then(function () { // wait till previous message has been shown.
               return botui.action.text({
                 action: {
-                placeholder: 'Enter your Filename/Folder...'
+                placeholder: 'Enter your Filename...'
                 }
             }).then(function (res) { // will be called when it is submitted.
-                      console.log(res.value); // will print whatever was typed in the field.
-                      value_response=res.value;
-                }).then(function(index)
-                {
-                  botui.message.add({
-                      delay: 1000,
+                  console.log(res.value); // will print whatever was typed in the field.
+                  value_response=res.value;
+                  confirmation(value_response);
+            });
+          });
+      }
+
+
+     function confirmation(index){
+          botui.message.add({
+                      delay: 600,
                       loading: true,
                       content: 'Are you sure you want to proceed?'
                     }).then(function(index)
@@ -48,37 +53,84 @@
                                   value: 'no'
                                 }
                               ]
-                            }).then(function (res) { // will be called when a button is clicked.
+                            }).then(function(res) { // will be called when a button is clicked.
                                   console.log(res.value);
                                   if(res.value=='yes')
                                   {
-                                  $.get('http://127.0.0.1:5000/'+value_response, function(response){
-                                  botui.message.add({
-                                    content: response
-                                    })
-
-                                  });
-                                  console.log(value_response); // will print "one" from 'value'
+                                        getresponse();
                                   }
                                   else
                                   {
-                                      botui.message.add({
-                                      delay: 1500,
-                                      content: 'Uploading Data to Places...'
-                                      });
+                                        getdefault();
                                   }
-
-                                  if(value_response!='exit')
-                                    convo();
                             });
                     });
                     
-                });
-               
-          });     
       }
 
-      convo();
+      function re_upload(index){
+          botui.message.add({
+                      delay: 600,
+                      loading: true,
+                      content: 'Do you want to add nother File?'
+                    }).then(function(index)
+                    {
+                      botui.action.button({ //shows decision buttons
+                              action: [
+                                { 
+                                  text: 'Yes',
+                                  value: 'yes'
+                                },
+                                { 
+                                  text: 'No',
+                                  value: 'no'
+                                }
+                              ]
+                            }).then(function(res) { // will be called when a button is clicked.
+                                  console.log(res.value);
+                                  if(res.value=='yes')
+                                  {
+                                        convo_init();
+                                  }
+                                  else
+                                  {
+                                        terminate();
+                                  }
+                            });
+                    });
+                    
+      }
+
+
+
+      function getresponse()
+      {
+        $.get('http://127.0.0.1:5000/hello/'+value_response, function(response){
+                botui.message.add({
+                    content: response
+                })
+          });
+        
+        console.log(value_response); // will print "one" from 'value'
+        re_upload(0);
+      }
+
+      function getdefault()
+      {
+        botui.message.add({
+          content: 'Uploading Data to Places...'
+        });
+        convo_init();
+      }
+      
+      function terminate()
+      {
+        botui.message.add({
+          content: 'Thank you for using Bot...'
+        });
+      }
+
+      convo_init();
     </script>
   </body>
 </html>
