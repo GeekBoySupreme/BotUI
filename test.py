@@ -8,6 +8,10 @@ CORS(app)
 def route_response(name):
    return getresponse2()
 
+@app.route('/hi/<name>')
+def route_response(name):
+   return getresponse()
+
 
 if __name__ == '__main__':
    app.run()
