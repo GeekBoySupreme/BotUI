@@ -9,7 +9,7 @@ def route_response(name):
    return getresponse2()
 
 @app.route('/hi/<name>')
-def route_response(name):
+def route_response1(name):
    return getresponse()
 
 
